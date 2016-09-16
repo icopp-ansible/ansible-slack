@@ -1,0 +1,13 @@
+---
+- name: Install Slack via Mac App Store
+  command: mas install "{{ item.id }}"
+  args:
+    creates: /Applications/{{ item.name }}.app
+  with_items:
+    - { id: 803453959, name: "Slack" }
+  when: ansible_os_family == "Darwin" and prefer_mas_over_homebrew == true
+
+- name: Install Slack via Homebrew
+  homebrew_cask:
+    name: slack
+  when: ansible_os_family == "Darwin" and prefer_mas_over_homebrew == false
